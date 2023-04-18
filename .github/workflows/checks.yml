@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: Simon Schneegans <code@simonschneegans.de>
+# SPDX-License-Identifier: CC0-1.0
+
+name: Checks
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  clang_format:
+    name: Check Clang-Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Download Clang-Format
+        run: |
+          sudo apt update -qq
+          sudo apt install clang-format -qq
+      - name: Run Clang-Format
+        run: scripts/clang-format.sh
+      - name: Compare Results
+        run: |
+          DIFF=$(git diff)
+          if [ ! -z "$DIFF" ]; then echo $DIFF && exit 1; fi
+
+  reuse:
+    name: Check Compliance with REUSE Specification
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: REUSE Compliance Check
+      uses: fsfe/reuse-action@v1

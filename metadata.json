@@ -1,0 +1,13 @@
+{
+    "name": "Ken-Do Integration",
+    "description": "This extension provides information about your currently focused application window as well as the mouse pointer position over a D-Bus interface. This is required for Ken-Do to work on Wayland.",
+    "uuid": "ken-do-integration@ken-do-menu.github.io",
+    "shell-version": [
+        "40",
+        "41",
+        "42",
+        "43"
+    ],
+    "version": 1,
+    "url": "https://github.com/ken-do-menu"
+}
