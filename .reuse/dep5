@@ -2,4 +2,4 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 
 Files: metadata.json
 Copyright: Simon Schneegans <code@simonschneegans.de>
-License: GPL-2.0-or-later
+License: CC0-1.0
