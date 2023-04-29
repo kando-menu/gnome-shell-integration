@@ -89,4 +89,10 @@ var Shortcuts = GObject.registerClass(
 
       return false;
     }
+
+    unbindAll() {
+      for (let shortcut of this._shortcuts) {
+        this.unbind(shortcut[0]);
+      }
+    }
   });
