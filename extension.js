@@ -13,8 +13,9 @@
 
 const {Gio, GLib} = imports.gi;
 
-const Me        = imports.misc.extensionUtils.getCurrentExtension();
-const Shortcuts = Me.imports.src.Shortcuts.Shortcuts;
+const Me               = imports.misc.extensionUtils.getCurrentExtension();
+const Shortcuts        = Me.imports.src.Shortcuts.Shortcuts;
+const InputManipulator = Me.imports.src.InputManipulator.InputManipulator;
 
 const DBUS_INTERFACE = `
 <node>
@@ -28,6 +29,10 @@ const DBUS_INTERFACE = `
       <arg name="y"    type="i" direction="out" />
       <arg name="mods" type="i" direction="out" />
     </method>
+    <method name="SimulateShortcut">
+      <arg name="shortcut" type="s" direction="in" />
+      <arg name="success"  type="b" direction="out" />
+    </method>
     <method name="BindShortcut">
       <arg name="shortcut" type="s" direction="in" />
       <arg name="success"  type="b" direction="out" />
@@ -35,6 +40,8 @@ const DBUS_INTERFACE = `
     <method name="UnbindShortcut">
       <arg name="shortcut" type="s" direction="in" />
       <arg name="success"  type="b" direction="out" />
+    </method>
+    <method name="UnbindAllShortcuts">
     </method>
     <signal name="ShortcutPressed">
       <arg name="shortcut" type="s"/>
@@ -49,7 +56,8 @@ class Extension {
     this._dbus = Gio.DBusExportedObject.wrapJSObject(DBUS_INTERFACE, this);
     this._dbus.export(Gio.DBus.session, '/org/gnome/shell/extensions/KenDoIntegration');
 
-    this._shortcuts = new Shortcuts();
+    this._shortcuts        = new Shortcuts();
+    this._inputManipulator = new InputManipulator();
 
     this._shortcuts.connect('activated', (s, shortcut) => {
       this._dbus.emit_signal('ShortcutPressed', new GLib.Variant('(s)', [shortcut]));
@@ -81,6 +89,11 @@ class Extension {
     return global.get_pointer();
   }
 
+  // Simulates the given shortcut.
+  SimulateShortcut(shortcut) {
+    return this._inputManipulator.activateAccelerator(shortcut);
+  }
+
   // Binds the given shortcut. When it's pressed, the "ShortcutPressed" signal will be
   // emitted.
   BindShortcut(shortcut) {
@@ -90,6 +103,11 @@ class Extension {
   // Unbinds a previously bound shortcut.
   UnbindShortcut(shortcut) {
     return this._shortcuts.unbind(shortcut);
+  }
+
+  // Unbinds all previously bound shortcuts.
+  UnbindAllShortcuts() {
+    return this._shortcuts.unbindAll();
   }
 }
 
