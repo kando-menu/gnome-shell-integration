@@ -70,6 +70,8 @@ class Extension {
     this._dbus.unexport();
     this._dbus = null;
 
+    this.UnbindAllShortcuts();
+
     this._shortcuts.destroy();
   }
 
