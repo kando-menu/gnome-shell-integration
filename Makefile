@@ -4,8 +4,8 @@
 SHELL := /bin/bash
 
 # We define these here to make the makefile easier to port to another extension.
-NAME     := ken-do-integration
-DOMAIN   := ken-do-menu.github.io
+NAME     := kando-integration
+DOMAIN   := kando-menu.github.io
 ZIP_NAME := $(NAME)@$(DOMAIN).zip
 
 # These files will be included in the extension zip file.

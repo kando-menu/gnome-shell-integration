@@ -1,8 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                      //
-//     |  /  __|   \ |       _ \   _ \     This file belongs to Ken-Do, the truly       //
-//     . <   _|   .  | ____| |  | (   |    amazing cross-platform marking menu.         //
-//    _|\_\ ___| _|\_|      ___/ \___/     Read more on github.com/ken-do-menu/ken-do   //
+//   _  _ ____ _  _ ___  ____                                                           //
+//   |_/  |__| |\ | |  \ |  |    This file belongs to Kando, the cross-platform         //
+//   | \_ |  | | \| |__/ |__|    pie menu. Read more on github.com/kando-menu/kando     //
 //                                                                                      //
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,7 +18,7 @@ const InputManipulator = Me.imports.src.InputManipulator.InputManipulator;
 
 const DBUS_INTERFACE = `
 <node>
-  <interface name="org.gnome.Shell.Extensions.KenDoIntegration">
+  <interface name="org.gnome.Shell.Extensions.KandoIntegration">
     <method name="GetFocusedWindow">
       <arg name="title" type="s" direction="out" />
       <arg name="class" type="s" direction="out" />
@@ -54,7 +53,7 @@ class Extension {
   // Exports the DBus interface.
   enable() {
     this._dbus = Gio.DBusExportedObject.wrapJSObject(DBUS_INTERFACE, this);
-    this._dbus.export(Gio.DBus.session, '/org/gnome/shell/extensions/KenDoIntegration');
+    this._dbus.export(Gio.DBus.session, '/org/gnome/shell/extensions/KandoIntegration');
 
     this._shortcuts        = new Shortcuts();
     this._inputManipulator = new InputManipulator();

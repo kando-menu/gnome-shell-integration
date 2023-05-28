@@ -1,7 +1,7 @@
 {
-    "name": "Ken-Do Integration",
-    "description": "This extension is required for Ken-Do to work on Wayland. It allows Ken-Do to bind global shortcuts, and provides information about your currently focused application window and it the position of your mouse pointer.",
-    "uuid": "ken-do-integration@ken-do-menu.github.io",
+    "name": "Kando Integration",
+    "description": "This extension is required for Kando to work on Wayland. It allows Kando to bind global shortcuts, and provides information about your currently focused application window and it the position of your mouse pointer.",
+    "uuid": "kando-integration@kando-menu.github.io",
     "shell-version": [
         "40",
         "41",
@@ -10,5 +10,5 @@
         "44"
     ],
     "version": 1,
-    "url": "https://github.com/ken-do-menu"
+    "url": "https://github.com/kando-menu"
 }
