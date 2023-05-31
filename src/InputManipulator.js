@@ -38,7 +38,7 @@ var InputManipulator = class InputManipulator {
   // -------------------------------------------------------------------- public interface
 
   // Warps the mouse pointer to the specified position.
-  warpPointer(x, y) {
+  movePointer(x, y) {
     this._mouse.notify_absolute_motion(0, x, y);
   }
 

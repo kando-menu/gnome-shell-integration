@@ -28,6 +28,10 @@ const DBUS_INTERFACE = `
       <arg name="y"    type="i" direction="out" />
       <arg name="mods" type="i" direction="out" />
     </method>
+    <method name="MovePointer">
+      <arg name="x"    type="i" direction="in" />
+      <arg name="y"    type="i" direction="in" />
+    </method>
     <method name="SimulateShortcut">
       <arg name="shortcut" type="s" direction="in" />
       <arg name="success"  type="b" direction="out" />
@@ -88,6 +92,11 @@ class Extension {
   // Returns the current pointer position and the currently pressed modifiers.
   GetPointer() {
     return global.get_pointer();
+  }
+
+  // Moves the pointer to the given position.
+  MovePointer(x, y) {
+    return this._inputManipulator.movePointer(x, y);
   }
 
   // Simulates the given shortcut.
