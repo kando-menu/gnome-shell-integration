@@ -29,8 +29,8 @@ const DBUS_INTERFACE = `
       <arg name="mods" type="i" direction="out" />
     </method>
     <method name="MovePointer">
-      <arg name="x"    type="i" direction="in" />
-      <arg name="y"    type="i" direction="in" />
+      <arg name="dx"   type="i" direction="in" />
+      <arg name="dy"   type="i" direction="in" />
     </method>
     <method name="SimulateShortcut">
       <arg name="shortcut" type="s" direction="in" />
@@ -95,8 +95,8 @@ class Extension {
   }
 
   // Moves the pointer to the given position.
-  MovePointer(x, y) {
-    return this._inputManipulator.movePointer(x, y);
+  MovePointer(dx, dy) {
+    return this._inputManipulator.movePointer(dx, dy);
   }
 
   // Simulates the given shortcut.

@@ -37,9 +37,9 @@ var InputManipulator = class InputManipulator {
 
   // -------------------------------------------------------------------- public interface
 
-  // Warps the mouse pointer to the specified position.
-  movePointer(x, y) {
-    this._mouse.notify_absolute_motion(0, x, y);
+  // Warps the mouse pointer by the given distance.
+  movePointer(dx, dy) {
+    this._mouse.notify_relative_motion(0, dx, dy);
   }
 
   // Simulates the activation of a given accelerator. The string can be anything accepted
