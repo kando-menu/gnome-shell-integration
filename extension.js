@@ -19,14 +19,11 @@ const InputManipulator = Me.imports.src.InputManipulator.InputManipulator;
 const DBUS_INTERFACE = `
 <node>
   <interface name="org.gnome.Shell.Extensions.KandoIntegration">
-    <method name="GetFocusedWindow">
-      <arg name="title" type="s" direction="out" />
-      <arg name="class" type="s" direction="out" />
-    </method>
-    <method name="GetPointer">
-      <arg name="x"    type="i" direction="out" />
-      <arg name="y"    type="i" direction="out" />
-      <arg name="mods" type="i" direction="out" />
+    <method name="GetWMInfo">
+      <arg name="windowTitle" type="s" direction="out" />
+      <arg name="windowClass" type="s" direction="out" />
+      <arg name="pointerX"    type="i" direction="out" />
+      <arg name="pointerY"    type="i" direction="out" />
     </method>
     <method name="MovePointer">
       <arg name="dx"   type="i" direction="in" />
@@ -78,20 +75,24 @@ class Extension {
     this._shortcuts.destroy();
   }
 
-  // Returns the title and class of the currently focused window.
-  GetFocusedWindow() {
+  // Returns the title and class of the currently focused window as well as the current
+  // pointer position.
+  GetWMInfo() {
+    let windowName  = '';
+    let windowClass = '';
+
     for (let actor of global.get_window_actors()) {
       if (actor.meta_window.has_focus()) {
-        return [actor.meta_window.get_title(), actor.meta_window.get_wm_class()];
+        windowName  = actor.meta_window.get_title();
+        windowClass = actor.meta_window.get_wm_class();
+
+        break;
       }
     }
 
-    return ['', ''];
-  }
+    const [x, y] = global.get_pointer();
 
-  // Returns the current pointer position and the currently pressed modifiers.
-  GetPointer() {
-    return global.get_pointer();
+    return [windowName, windowClass, x, y];
   }
 
   // Moves the pointer to the given position.
