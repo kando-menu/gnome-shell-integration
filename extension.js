@@ -94,12 +94,14 @@ class Extension {
     return [windowName, windowClass, x, y];
   }
 
-  // Moves the pointer to the given position.
+  // Warps the mouse pointer by the given distance.
   MovePointer(dx, dy) {
     this._inputManipulator.movePointer(dx, dy);
   }
 
-  // Simulates the given shortcut.
+  // Simulates the given key strokes. The keys argument is an array of arrays. Each
+  // sub-array contains three elements: The keysym, a boolean indicating whether the key
+  // should be pressed or released and an optional delay in milliseconds.
   SimulateKeys(keys) {
     this._inputManipulator.simulateKeys(keys);
   }
