@@ -42,39 +42,23 @@ var InputManipulator = class InputManipulator {
     this._mouse.notify_relative_motion(0, dx, dy);
   }
 
-  // Simulates the activation of a given accelerator. The string can be anything accepted
-  // by Gtk.accelerator_parse(). That is, for example, "<Control>a" or "<Shift><Alt>F1".
-  activateAccelerator(string) {
+  // Simulates the given key strokes. The keys argument is an array of arrays. Each
+  // sub-array contains three elements: The keysym, a boolean indicating whether the key
+  // should be pressed or released and an optional delay in milliseconds.
+  async simulateKeys(keys) {
+    for (const key of keys) {
+      const [keysym, down, delay] = key;
 
-    // First we release any currently pressed modifiers.
-    const currentMods = global.get_pointer()[2];
-    this._releaseModifiers(currentMods);
+      // Wait a couple of milliseconds if the key a delay is specified.
+      if (delay > 0) {
+        await new Promise(resolve => {
+          setTimeout(resolve, delay);
+        });
+      }
 
-    // Now parse the string and press the buttons accordingly.
-    const res = Gtk.accelerator_parse(string);
-    let ok, keyval, mods;
-
-    // The return value is different in GTK4.
-    if (Gtk.get_major_version() == 4) {
-      [ok, keyval, mods] = res;
-    } else {
-      [keyval, mods] = res;
-      ok             = keyval != null;
+      this._keyboard.notify_keyval(
+        0, keysym, down ? Clutter.KeyState.PRESSED : Clutter.KeyState.RELEASED);
     }
-
-    if (!ok) {
-      return false;
-    }
-
-    this._pressModifiers(mods);
-    this._keyboard.notify_keyval(0, keyval, Clutter.KeyState.PRESSED);
-    this._keyboard.notify_keyval(0, keyval, Clutter.KeyState.RELEASED);
-    this._releaseModifiers(mods);
-
-    // Finally we re-press the modifiers which were pressed before.
-    this._pressModifiers(currentMods);
-
-    return true;
   }
 
   // ----------------------------------------------------------------------- private stuff

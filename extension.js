@@ -29,9 +29,8 @@ const DBUS_INTERFACE = `
       <arg name="dx"   type="i" direction="in" />
       <arg name="dy"   type="i" direction="in" />
     </method>
-    <method name="SimulateShortcut">
-      <arg name="shortcut" type="s" direction="in" />
-      <arg name="success"  type="b" direction="out" />
+    <method name="SimulateKeys">
+      <arg name="keys" type="a(ibi)" direction="in" />
     </method>
     <method name="BindShortcut">
       <arg name="shortcut" type="s" direction="in" />
@@ -97,12 +96,12 @@ class Extension {
 
   // Moves the pointer to the given position.
   MovePointer(dx, dy) {
-    return this._inputManipulator.movePointer(dx, dy);
+    this._inputManipulator.movePointer(dx, dy);
   }
 
   // Simulates the given shortcut.
-  SimulateShortcut(shortcut) {
-    return this._inputManipulator.activateAccelerator(shortcut);
+  SimulateKeys(keys) {
+    this._inputManipulator.simulateKeys(keys);
   }
 
   // Binds the given shortcut. When it's pressed, the "ShortcutPressed" signal will be
