@@ -47,7 +47,7 @@ var InputManipulator = class InputManipulator {
   // should be pressed or released and an optional delay in milliseconds.
   async simulateKeys(keys) {
     for (const key of keys) {
-      const [keysym, down, delay] = key;
+      const [keycode, down, delay] = key;
 
       // Wait a couple of milliseconds if the key a delay is specified.
       if (delay > 0) {
@@ -56,8 +56,10 @@ var InputManipulator = class InputManipulator {
         });
       }
 
-      this._keyboard.notify_keyval(
-        0, keysym, down ? Clutter.KeyState.PRESSED : Clutter.KeyState.RELEASED);
+      // https://gitlab.gnome.org/GNOME/mutter/-/blob/main/src/backends/native/meta-xkb-utils.c#L61
+      // https://gitlab.gnome.org/GNOME/mutter/-/blob/main/src/backends/native/meta-xkb-utils.c#L123
+      this._keyboard.notify_key(
+        0, keycode - 8, down ? Clutter.KeyState.PRESSED : Clutter.KeyState.RELEASED);
     }
   }
 
