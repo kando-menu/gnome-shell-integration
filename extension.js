@@ -10,11 +10,12 @@
 
 'use strict';
 
-const {Gio, GLib} = imports.gi;
+import Gio from 'gi://Gio';
+import GLib from 'gi://GLib';
 
-const Me               = imports.misc.extensionUtils.getCurrentExtension();
-const Shortcuts        = Me.imports.src.Shortcuts.Shortcuts;
-const InputManipulator = Me.imports.src.InputManipulator.InputManipulator;
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+import {Shortcuts} from './src/Shortcuts.js';
+import {InputManipulator} from './src/InputManipulator.js';
 
 const DBUS_INTERFACE = `
 <node>
@@ -48,7 +49,7 @@ const DBUS_INTERFACE = `
   </interface>
 </node>`;
 
-class Extension {
+export default class KandoIntegration extends Extension {
 
   // Exports the DBus interface.
   enable() {

@@ -10,14 +10,14 @@
 
 'use strict';
 
-const {Clutter, Gtk} = imports.gi;
+import Clutter from 'gi://Clutter';
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // An instance of this class can be used to create faked input events. You can use it   //
 // to move the mouse pointer or to press accelerator key strokes.                       //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-var InputManipulator = class InputManipulator {
+export class InputManipulator {
 
   // ------------------------------------------------------------ constructor / destructor
 
@@ -60,55 +60,6 @@ var InputManipulator = class InputManipulator {
       // https://gitlab.gnome.org/GNOME/mutter/-/blob/main/src/backends/native/meta-xkb-utils.c#L123
       this._keyboard.notify_key(
         0, keycode - 8, down ? Clutter.KeyState.PRESSED : Clutter.KeyState.RELEASED);
-    }
-  }
-
-  // ----------------------------------------------------------------------- private stuff
-
-  // Helper method which 'releases' the desired modifier keys.
-  _releaseModifiers(modifiers) {
-
-    // Since we do not know whether left or right version of each key is pressed, we
-    // release both...
-    if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
-      this._keyboard.notify_keyval(0, Clutter.KEY_Control_L, Clutter.KeyState.RELEASED);
-      this._keyboard.notify_keyval(0, Clutter.KEY_Control_R, Clutter.KeyState.RELEASED);
-    }
-
-    if (modifiers & Clutter.ModifierType.SHIFT_MASK) {
-      this._keyboard.notify_keyval(0, Clutter.KEY_Shift_L, Clutter.KeyState.RELEASED);
-      this._keyboard.notify_keyval(0, Clutter.KEY_Shift_R, Clutter.KeyState.RELEASED);
-    }
-
-    if (modifiers & Clutter.ModifierType.MOD1_MASK) {
-      this._keyboard.notify_keyval(0, Clutter.KEY_Alt_L, Clutter.KeyState.RELEASED);
-      this._keyboard.notify_keyval(0, Clutter.KEY_Alt_R, Clutter.KeyState.RELEASED);
-    }
-
-    if ((modifiers & Clutter.ModifierType.MOD4_MASK) ||
-        (modifiers & Clutter.ModifierType.SUPER_MASK)) {
-      this._keyboard.notify_keyval(0, Clutter.KEY_Super_L, Clutter.KeyState.RELEASED);
-      this._keyboard.notify_keyval(0, Clutter.KEY_Super_R, Clutter.KeyState.RELEASED);
-    }
-  }
-
-  // Helper method which 'presses' the desired modifier keys.
-  _pressModifiers(modifiers) {
-    if (modifiers & Clutter.ModifierType.CONTROL_MASK) {
-      this._keyboard.notify_keyval(0, Clutter.KEY_Control_L, Clutter.KeyState.PRESSED);
-    }
-
-    if (modifiers & Clutter.ModifierType.SHIFT_MASK) {
-      this._keyboard.notify_keyval(0, Clutter.KEY_Shift_L, Clutter.KeyState.PRESSED);
-    }
-
-    if (modifiers & Clutter.ModifierType.MOD1_MASK) {
-      this._keyboard.notify_keyval(0, Clutter.KEY_Alt_L, Clutter.KeyState.PRESSED);
-    }
-
-    if ((modifiers & Clutter.ModifierType.MOD4_MASK) ||
-        (modifiers & Clutter.ModifierType.SUPER_MASK)) {
-      this._keyboard.notify_keyval(0, Clutter.KEY_Super_L, Clutter.KeyState.PRESSED);
     }
   }
 };

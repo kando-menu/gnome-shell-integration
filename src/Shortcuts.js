@@ -10,8 +10,11 @@
 
 'use strict';
 
-const Main                   = imports.ui.main;
-const {Shell, Meta, GObject} = imports.gi;
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+
+import Shell from 'gi://Shell';
+import Meta from 'gi://Meta';
+import GObject from 'gi://GObject';
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // This class can be used to bind a function to global hot keys. It's designed in the   //
@@ -20,7 +23,7 @@ const {Shell, Meta, GObject} = imports.gi;
 // is passed as a parameter to the callback.                                            //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-var Shortcuts = GObject.registerClass(
+export var Shortcuts = GObject.registerClass(
 
   // Whenever one of the registered shortcuts is pressed, the "activated" callback
   // will be executed. The pressed shortcut is given as parameter.
