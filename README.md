@@ -28,3 +28,8 @@ Finally, enable the extension:
 ```bash
 gnome-extensions enable kando-integration@kando-menu.github.io
 ```
+
+## Changelog
+
+We do not maintain a separate changelog for this repository.
+Changes are documented alongside other changes in Kando's [changelog](https://github.com/kando-menu/kando/blob/main/docs/changelog.md).
