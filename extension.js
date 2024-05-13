@@ -51,6 +51,14 @@ const DBUS_INTERFACE = `
 
 export default class KandoIntegration extends Extension {
 
+  constructor(metadata) {
+    super(metadata);
+
+    // This set contains all currently bound shortcuts. We will use it to re-bind all
+    // shortcuts when the extension is re-enabled.
+    this._currentShortcuts = new Set();
+  }
+
   // Exports the DBus interface.
   enable() {
     this._dbus = Gio.DBusExportedObject.wrapJSObject(DBUS_INTERFACE, this);
@@ -61,6 +69,10 @@ export default class KandoIntegration extends Extension {
 
     this._shortcuts.connect('activated', (s, shortcut) => {
       this._dbus.emit_signal('ShortcutPressed', new GLib.Variant('(s)', [shortcut]));
+    });
+
+    this._currentShortcuts.forEach((shortcut) => {
+      this.BindShortcut(shortcut);
     });
   }
 
@@ -110,12 +122,24 @@ export default class KandoIntegration extends Extension {
   // Binds the given shortcut. When it's pressed, the "ShortcutPressed" signal will be
   // emitted.
   BindShortcut(shortcut) {
-    return this._shortcuts.bind(shortcut);
+    const success = this._shortcuts.bind(shortcut);
+
+    if (success) {
+      this._currentShortcuts.add(shortcut);
+    }
+
+    return success;
   }
 
   // Unbinds a previously bound shortcut.
   UnbindShortcut(shortcut) {
-    return this._shortcuts.unbind(shortcut);
+    const success = this._shortcuts.unbind(shortcut);
+
+    if (success) {
+      this._currentShortcuts.delete(shortcut);
+    }
+
+    return success;
   }
 
   // Unbinds all previously bound shortcuts.
