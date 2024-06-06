@@ -5,7 +5,7 @@
 //                                                                                      //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-// SPDX-FileCopyrightText: 2023 Simon Schneegans <code@simonschneegans.de>
+// SPDX-FileCopyrightText: Simon Schneegans <code@simonschneegans.de>
 // SPDX-License-Identifier: MIT
 
 'use strict';
