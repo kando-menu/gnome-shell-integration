@@ -22,17 +22,9 @@ export class InputManipulator {
   // ------------------------------------------------------------ constructor / destructor
 
   constructor() {
-
-    // get_default_seat() is available since GNOME Shell 3.36.
-    if (Clutter.get_default_backend().get_default_seat) {
-      const dev      = Clutter.get_default_backend().get_default_seat();
-      this._mouse    = dev.create_virtual_device(Clutter.InputDeviceType.POINTER_DEVICE);
-      this._keyboard = dev.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
-    } else {
-      const dev      = Clutter.DeviceManager.get_default();
-      this._mouse    = dev.create_virtual_device(Clutter.InputDeviceType.POINTER_DEVICE);
-      this._keyboard = dev.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
-    }
+    const dev      = Clutter.get_default_backend().get_default_seat();
+    this._mouse    = dev.create_virtual_device(Clutter.InputDeviceType.POINTER_DEVICE);
+    this._keyboard = dev.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
   }
 
   // -------------------------------------------------------------------- public interface
