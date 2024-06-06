@@ -5,7 +5,7 @@
 //                                                                                      //
 //////////////////////////////////////////////////////////////////////////////////////////
 
-// SPDX-FileCopyrightText: 2023 Simon Schneegans <code@simonschneegans.de>
+// SPDX-FileCopyrightText: Simon Schneegans <code@simonschneegans.de>
 // SPDX-License-Identifier: MIT
 
 'use strict';
@@ -17,6 +17,10 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {Shortcuts} from './src/Shortcuts.js';
 import {InputManipulator} from './src/InputManipulator.js';
 
+// This is the DBus interface which will be exported by this extension. It provides
+// methods to get information about the currently focused window and the mouse pointer
+// position. It also allows to move the mouse pointer, simulate key strokes and bind
+// shortcuts.
 const DBUS_INTERFACE = `
 <node>
   <interface name="org.gnome.Shell.Extensions.KandoIntegration">
