@@ -1,16 +1,13 @@
 {
-    "name": "Kando Integration",
-    "description": "This extension is required for Kando to work on Wayland. It allows Kando to bind global shortcuts, and provides information about your currently focused application window and it the position of your mouse pointer.",
-    "uuid": "kando-integration@kando-menu.github.io",
-    "donations": {
-        "kofi": "schneegans",
-        "github": "schneegans",
-        "paypal": "simonschneegans"
-    },
-    "shell-version": [
-        "45",
-        "46"
-    ],
-    "version-name": "v0.2.0",
-    "url": "https://github.com/kando-menu"
+  "name": "Kando Integration",
+  "description": "This extension is required for Kando to work on Wayland. It allows Kando to bind global shortcuts, and provides information about your currently focused application window and the position of your mouse pointer.",
+  "uuid": "kando-integration@kando-menu.github.io",
+  "donations": {
+    "kofi": "schneegans",
+    "github": "schneegans",
+    "paypal": "simonschneegans"
+  },
+  "shell-version": ["45", "46"],
+  "version-name": "v0.3.0",
+  "url": "https://github.com/kando-menu"
 }
