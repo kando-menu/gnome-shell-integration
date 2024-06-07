@@ -69,8 +69,7 @@ export default class KandoIntegration extends Extension {
 
     // Re-bind all shortcuts that were bound before the extension was disabled.
     this._settings = this.getSettings();
-    this._settings.get_strv('shortcuts');
-    shortcuts.forEach((shortcut) => {
+    this._settings.get_strv('shortcuts').forEach((shortcut) => {
       this._shortcuts.bind(shortcut);
     });
   }
