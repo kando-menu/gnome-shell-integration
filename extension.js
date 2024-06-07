@@ -89,6 +89,9 @@ export default class KandoIntegration extends Extension {
     this.UnbindAllShortcuts();
 
     this._shortcuts.destroy();
+    this._shortcuts = null;
+
+    this._inputManipulator = null;
   }
 
   // Returns the title and class of the currently focused window as well as the current
@@ -150,8 +153,4 @@ export default class KandoIntegration extends Extension {
   UnbindAllShortcuts() {
     return this._shortcuts.unbindAll();
   }
-}
-
-function init() {
-  return new Extension();
 }

@@ -51,7 +51,6 @@ export var Shortcuts = GObject.registerClass(
     // Unbinds all registered shortcuts.
     destroy() {
       global.display.disconnect(this._displayConnection);
-      global.stage.disconnect(this._stageConnection);
 
       for (let shortcut of this._shortcuts) {
         console.log('Unbinding shortcut: ' + shortcut.name);
