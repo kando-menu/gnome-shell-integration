@@ -9,7 +9,7 @@ DOMAIN   := kando-menu.github.io
 ZIP_NAME := $(NAME)@$(DOMAIN).zip
 
 # These files will be included in the extension zip file.
-ZIP_CONTENT = extension.js metadata.json src/*.js
+ZIP_CONTENT = extension.js metadata.json src/*.js schemas/org.gnome.shell.extensions.$(NAME).gschema.xml
 
 # These five recipes can be invoked by the user.
 .PHONY: zip install uninstall clean

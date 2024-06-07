@@ -55,14 +55,6 @@ const DBUS_INTERFACE = `
 
 export default class KandoIntegration extends Extension {
 
-  constructor(metadata) {
-    super(metadata);
-
-    // This set contains all currently bound shortcuts. We will use it to re-bind all
-    // shortcuts when the extension is re-enabled.
-    this._currentShortcuts = new Set();
-  }
-
   // Exports the DBus interface.
   enable() {
     this._dbus = Gio.DBusExportedObject.wrapJSObject(DBUS_INTERFACE, this);
@@ -75,8 +67,10 @@ export default class KandoIntegration extends Extension {
       this._dbus.emit_signal('ShortcutPressed', new GLib.Variant('(s)', [shortcut]));
     });
 
-    this._currentShortcuts.forEach((shortcut) => {
-      this.BindShortcut(shortcut);
+    // Re-bind all shortcuts that were bound before the extension was disabled.
+    const shortcuts = this.getSettings().get_strv('shortcuts');
+    shortcuts.forEach((shortcut) => {
+      this._shortcuts.bind(shortcut);
     });
   }
 
@@ -85,8 +79,6 @@ export default class KandoIntegration extends Extension {
     this._dbus.flush();
     this._dbus.unexport();
     this._dbus = null;
-
-    this.UnbindAllShortcuts();
 
     this._shortcuts.destroy();
     this._shortcuts = null;
@@ -132,7 +124,9 @@ export default class KandoIntegration extends Extension {
     const success = this._shortcuts.bind(shortcut);
 
     if (success) {
-      this._currentShortcuts.add(shortcut);
+      const shortcuts = this.getSettings().get_strv('shortcuts');
+      shortcuts.push(shortcut);
+      this.getSettings().set_strv('shortcuts', shortcuts);
     }
 
     return success;
@@ -143,7 +137,8 @@ export default class KandoIntegration extends Extension {
     const success = this._shortcuts.unbind(shortcut);
 
     if (success) {
-      this._currentShortcuts.delete(shortcut);
+      const shortcuts = this.getSettings().get_strv('shortcuts');
+      this.getSettings().set_strv('shortcuts', shortcuts.filter((s) => s !== shortcut));
     }
 
     return success;
@@ -151,6 +146,7 @@ export default class KandoIntegration extends Extension {
 
   // Unbinds all previously bound shortcuts.
   UnbindAllShortcuts() {
-    return this._shortcuts.unbindAll();
+    this._shortcuts.unbindAll();
+    this.getSettings().set_strv('shortcuts', []);
   }
 }

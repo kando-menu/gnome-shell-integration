@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: Simon Schneegans <code@simonschneegans.de>
+SPDX-License-Identifier: CC0-1.0
+-->
+
+<schemalist>
+
+    <schema path="/org/gnome/shell/extensions/kando-integration/" id="org.gnome.shell.extensions.kando-integration">
+
+        <key name="shortcuts" type="as">
+            <default>[]</default>
+            <summary>Shortcuts</summary>
+            <description>A list of all currently bound accelerators.</description>
+        </key>
+
+    </schema>
+</schemalist>
