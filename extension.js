@@ -68,7 +68,8 @@ export default class KandoIntegration extends Extension {
     });
 
     // Re-bind all shortcuts that were bound before the extension was disabled.
-    const shortcuts = this.getSettings().get_strv('shortcuts');
+    this._settings = this.getSettings();
+    this._settings.get_strv('shortcuts');
     shortcuts.forEach((shortcut) => {
       this._shortcuts.bind(shortcut);
     });
@@ -82,6 +83,8 @@ export default class KandoIntegration extends Extension {
 
     this._shortcuts.destroy();
     this._shortcuts = null;
+
+    this._settings = null;
 
     this._inputManipulator = null;
   }
@@ -124,9 +127,9 @@ export default class KandoIntegration extends Extension {
     const success = this._shortcuts.bind(shortcut);
 
     if (success) {
-      const shortcuts = this.getSettings().get_strv('shortcuts');
+      const shortcuts = this._settings.get_strv('shortcuts');
       shortcuts.push(shortcut);
-      this.getSettings().set_strv('shortcuts', shortcuts);
+      this._settings.set_strv('shortcuts', shortcuts);
     }
 
     return success;
@@ -137,8 +140,8 @@ export default class KandoIntegration extends Extension {
     const success = this._shortcuts.unbind(shortcut);
 
     if (success) {
-      const shortcuts = this.getSettings().get_strv('shortcuts');
-      this.getSettings().set_strv('shortcuts', shortcuts.filter((s) => s !== shortcut));
+      const shortcuts = this._settings.get_strv('shortcuts');
+      this._settings.set_strv('shortcuts', shortcuts.filter((s) => s !== shortcut));
     }
 
     return success;
@@ -147,6 +150,6 @@ export default class KandoIntegration extends Extension {
   // Unbinds all previously bound shortcuts.
   UnbindAllShortcuts() {
     this._shortcuts.unbindAll();
-    this.getSettings().set_strv('shortcuts', []);
+    this._settings.set_strv('shortcuts', []);
   }
 }
