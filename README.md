@@ -12,9 +12,15 @@ This GNOME Shell extension is required for [🥧 Kando](https://github.com/kando
 Via a D-Bus interface, it provides the name of the currently focused window, and the current mouse pointer position.
 Furthermore, it allows registering and simulating keyboard shortcuts.
 
-## Installation
+## ⬇️ Installation
 
-The extension is not yet available on extensions.gnome.org. To install it, clone this repository and run `make install`:
+### From the GNOME Extensions Website
+
+Just head over to [extensions.gnome.org](https://extensions.gnome.org/extension/7068/kando-integration/) and flip the switch to install the extension!
+
+### From Source Code
+
+To install the extension directly from the `main` branch on GitHub, clone this repository and run `make install`:
 
 ```bash
 git clone https://github.com/kando-menu/gnome-shell-integration.git
@@ -29,7 +35,7 @@ Finally, enable the extension:
 gnome-extensions enable kando-integration@kando-menu.github.io
 ```
 
-## Changelog
+## 🗒️ Changelog
 
 We do not maintain a separate changelog for this repository.
 Changes are documented alongside other changes in Kando's [changelog](https://github.com/kando-menu/kando/blob/main/docs/changelog.md).
