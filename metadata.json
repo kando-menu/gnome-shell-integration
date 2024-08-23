@@ -8,7 +8,7 @@
     "github": "schneegans",
     "paypal": "simonschneegans"
   },
-  "shell-version": ["45", "46"],
-  "version-name": "v0.3.1",
+  "shell-version": ["45", "46", "47"],
+  "version-name": "v0.4.0",
   "url": "https://github.com/kando-menu"
 }
