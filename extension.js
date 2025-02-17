@@ -12,6 +12,7 @@
 
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {Shortcuts} from './src/Shortcuts.js';
@@ -57,6 +58,10 @@ export default class KandoIntegration extends Extension {
 
   // Exports the DBus interface.
   enable() {
+    // Do nothing on X11.
+    if (!Meta.is_wayland_compositor()) {
+      return;
+    }
     this._dbus = Gio.DBusExportedObject.wrapJSObject(DBUS_INTERFACE, this);
     this._dbus.export(Gio.DBus.session, '/org/gnome/shell/extensions/KandoIntegration');
 
@@ -76,6 +81,12 @@ export default class KandoIntegration extends Extension {
 
   // Unbinds all shortcuts and unexports the DBus interface.
   disable() {
+
+    // Do nothing on X11.
+    if (!Meta.is_wayland_compositor()) {
+      return;
+    }
+
     this._dbus.flush();
     this._dbus.unexport();
     this._dbus = null;
