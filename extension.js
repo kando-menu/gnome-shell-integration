@@ -58,10 +58,15 @@ export default class KandoIntegration extends Extension {
 
   // Exports the DBus interface.
   enable() {
+
     // Do nothing on X11.
     if (!Meta.is_wayland_compositor()) {
       return;
     }
+
+    // This is used to get the desktop's text scaling factor.
+    this._shellSettings = new Gio.Settings({schema: 'org.gnome.desktop.interface'});
+
     this._dbus = Gio.DBusExportedObject.wrapJSObject(DBUS_INTERFACE, this);
     this._dbus.export(Gio.DBus.session, '/org/gnome/shell/extensions/KandoIntegration');
 
@@ -86,6 +91,8 @@ export default class KandoIntegration extends Extension {
     if (!Meta.is_wayland_compositor()) {
       return;
     }
+
+    this._shellSettings = null;
 
     this._dbus.flush();
     this._dbus.unexport();
@@ -116,7 +123,12 @@ export default class KandoIntegration extends Extension {
 
     const [x, y] = global.get_pointer();
 
-    return [windowName, windowClass, x, y];
+    const scalingFactor = this._shellSettings.get_double('text-scaling-factor');
+
+    return [
+      windowName, windowClass, Math.round(x / scalingFactor),
+      Math.round(y / scalingFactor)
+    ];
   }
 
   // Warps the mouse pointer by the given distance.
