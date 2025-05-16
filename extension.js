@@ -85,6 +85,7 @@ export default class KandoIntegration extends Extension {
     });
 
     const backend = global.backend ? global.backend : Meta.get_backend();
+    this._lastPointerDevice = null;
 
     this._deviceChangedID = backend.connect('last-device-changed', (b, device) => {
       // Multi-cursor stuff only works on Wayland. For now, I assume that tablets,
@@ -130,6 +131,8 @@ export default class KandoIntegration extends Extension {
     this._settings = null;
 
     this._inputManipulator = null;
+
+    backend.disconnect(this._deviceChangedID);
   }
 
   // Returns the title and class of the currently focused window as well as the current
