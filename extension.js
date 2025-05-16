@@ -150,14 +150,21 @@ export default class KandoIntegration extends Extension {
       }
     }
 
-    const seat               = Clutter.get_default_backend().get_default_seat();
-    const [ok, coords, mods] = seat.query_state(this._lastPointerDevice, null);
+    let [x, y];
+
+    if (this._lastPointerDevice != null) {
+      const seat               = Clutter.get_default_backend().get_default_seat();
+      const [ok, coords, mods] = seat.query_state(this._lastPointerDevice, null);
+      [x, y] = [coords.x, coords.y];
+    } else {
+      [x, y] = global.get_pointer();
+    }
 
     const scalingFactor = this._shellSettings.get_double('text-scaling-factor');
 
     return [
-      windowName, windowClass, Math.round(coords.x / scalingFactor),
-      Math.round(coords.y / scalingFactor)
+      windowName, windowClass, Math.round(x / scalingFactor),
+      Math.round(y / scalingFactor)
     ];
   }
 
