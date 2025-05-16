@@ -150,7 +150,7 @@ export default class KandoIntegration extends Extension {
       }
     }
 
-    let [x, y];
+    let [x, y] = [0, 0];
 
     if (this._lastPointerDevice != null) {
       const seat               = Clutter.get_default_backend().get_default_seat();
