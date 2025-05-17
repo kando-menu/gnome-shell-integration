@@ -84,10 +84,10 @@ export default class KandoIntegration extends Extension {
       this._shortcuts.bind(shortcut);
     });
 
-    const backend = global.backend ? global.backend : Meta.get_backend();
+    this._backend = global.backend ? global.backend : Meta.get_backend();
     this._lastPointerDevice = null;
 
-    this._deviceChangedID = backend.connect('last-device-changed', (b, device) => {
+    this._deviceChangedID = this._backend.connect('last-device-changed', (b, device) => {
       // Multi-cursor stuff only works on Wayland. For now, I assume that tablets,
       // pens and erasers create a secondary cursor. Is this true?
       if (Meta.is_wayland_compositor()) {
@@ -132,7 +132,7 @@ export default class KandoIntegration extends Extension {
 
     this._inputManipulator = null;
 
-    backend.disconnect(this._deviceChangedID);
+    this._backend.disconnect(this._deviceChangedID);
   }
 
   // Returns the title and class of the currently focused window as well as the current
