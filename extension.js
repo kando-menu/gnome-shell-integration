@@ -88,24 +88,20 @@ export default class KandoIntegration extends Extension {
     this._lastPointerDevice = null;
 
     this._deviceChangedID = this._backend.connect('last-device-changed', (b, device) => {
-      // Multi-cursor stuff only works on Wayland. For now, I assume that tablets,
-      // pens and erasers create a secondary cursor. Is this true?
-      if (Meta.is_wayland_compositor()) {
-        if (device.get_device_type() == Clutter.InputDeviceType.TABLET_DEVICE ||
-            device.get_device_type() == Clutter.InputDeviceType.PEN_DEVICE ||
-            device.get_device_type() == Clutter.InputDeviceType.ERASER_DEVICE) {
+      // For now, we assume that tablets, pens and erasers create a secondary cursor.
+      // Is this true? For all other pointer-input devices, we use the main mouse pointer
+      // location.
+      if (device.get_device_type() == Clutter.InputDeviceType.TABLET_DEVICE ||
+          device.get_device_type() == Clutter.InputDeviceType.PEN_DEVICE ||
+          device.get_device_type() == Clutter.InputDeviceType.ERASER_DEVICE) {
 
-          this._lastPointerDevice = device;
-        }
-        // For all other pointer-input devices, we use the main mouse pointer
-        // location.
-        else if (device.get_device_type() == Clutter.InputDeviceType.POINTER_DEVICE ||
+        this._lastPointerDevice = device;
+      } else if (device.get_device_type() == Clutter.InputDeviceType.POINTER_DEVICE ||
                  device.get_device_type() == Clutter.InputDeviceType.TOUCHPAD_DEVICE ||
                  device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE) {
 
-          const seat              = Clutter.get_default_backend().get_default_seat();
-          this._lastPointerDevice = seat.get_pointer();
-        }
+        const seat              = Clutter.get_default_backend().get_default_seat();
+        this._lastPointerDevice = seat.get_pointer();
       }
     });
   }
