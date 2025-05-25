@@ -13,6 +13,7 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
+import Clutter from 'gi://Clutter';
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {Shortcuts} from './src/Shortcuts.js';
@@ -82,6 +83,32 @@ export default class KandoIntegration extends Extension {
     this._settings.get_strv('shortcuts').forEach((shortcut) => {
       this._shortcuts.bind(shortcut);
     });
+
+    this._backend = global.backend ? global.backend : Meta.get_backend();
+    this._lastPointerDevice = null;
+
+    this._deviceChangedID = this._backend.connect('last-device-changed', (b, device) => {
+      // Multi-cursor stuff only works on Wayland. For now, I assume that tablets,
+      // pens and erasers create a secondary cursor. Is this true?
+      if (Meta.is_wayland_compositor()) {
+        if (device.get_device_type() == Clutter.InputDeviceType.TABLET_DEVICE ||
+            device.get_device_type() == Clutter.InputDeviceType.PEN_DEVICE ||
+            device.get_device_type() == Clutter.InputDeviceType.ERASER_DEVICE) {
+
+          this._lastPointerDevice = device;
+        }
+        // For all other pointer-input devices, we use the main mouse pointer
+        // location.
+        else if (
+            device.get_device_type() == Clutter.InputDeviceType.POINTER_DEVICE ||
+            device.get_device_type() == Clutter.InputDeviceType.TOUCHPAD_DEVICE ||
+            device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE) {
+
+          const seat              = Clutter.get_default_backend().get_default_seat();
+          this._lastPointerDevice = seat.get_pointer();
+        }
+      }
+    });
   }
 
   // Unbinds all shortcuts and unexports the DBus interface.
@@ -104,6 +131,8 @@ export default class KandoIntegration extends Extension {
     this._settings = null;
 
     this._inputManipulator = null;
+
+    this._backend.disconnect(this._deviceChangedID);
   }
 
   // Returns the title and class of the currently focused window as well as the current
@@ -121,7 +150,15 @@ export default class KandoIntegration extends Extension {
       }
     }
 
-    const [x, y] = global.get_pointer();
+    let [x, y] = [0, 0];
+
+    if (this._lastPointerDevice != null) {
+      const seat               = Clutter.get_default_backend().get_default_seat();
+      const [ok, coords, mods] = seat.query_state(this._lastPointerDevice, null);
+      [x, y] = [coords.x, coords.y];
+    } else {
+      [x, y] = global.get_pointer();
+    }
 
     const scalingFactor = this._shellSettings.get_double('text-scaling-factor');
 
