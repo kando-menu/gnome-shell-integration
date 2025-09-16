@@ -15,6 +15,7 @@ import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
 import Clutter from 'gi://Clutter';
 
+import * as utils from './src/utils.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {Shortcuts} from './src/Shortcuts.js';
 import {InputManipulator} from './src/InputManipulator.js';
@@ -100,8 +101,15 @@ export default class KandoIntegration extends Extension {
                  device.get_device_type() == Clutter.InputDeviceType.TOUCHPAD_DEVICE ||
                  device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE) {
 
-        const seat              = Clutter.get_default_backend().get_default_seat();
-        this._lastPointerDevice = seat.get_pointer();
+        if (utils.shellVersionIsAtLeast(49)) {
+          // const sprite = Clutter.get_default_backend().get_pointer_sprite(global.stage);
+          // this._lastPointerDevice = sprite.device;
+        } else if (utils.shellVersionIsAtLeast(49, "beta")) {
+          // On GNOME 49 beta and rc there was no way to get the coords of a specific device.
+        } else {
+          const seat              = Clutter.get_default_backend().get_default_seat();
+          this._lastPointerDevice = seat.get_pointer();
+        }
       }
     });
   }
@@ -150,8 +158,13 @@ export default class KandoIntegration extends Extension {
 
     if (this._lastPointerDevice != null) {
       const seat               = Clutter.get_default_backend().get_default_seat();
-      const [ok, coords, mods] = seat.query_state(this._lastPointerDevice, null);
-      [x, y]                   = [coords.x, coords.y];
+      if (utils.shellVersionIsAtLeast(49)) {
+        const coords = this._lastPointerDevice.get_coords();
+        [x, y] = [coords.x, coords.y];
+      } else {
+        const [ok, coords, mods] = seat.query_state(this._lastPointerDevice, null);
+        [x, y]                   = [coords.x, coords.y];
+      }
     } else {
       [x, y] = global.get_pointer();
     }
