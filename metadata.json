@@ -9,6 +9,6 @@
     "paypal": "simonschneegans"
   },
   "shell-version": ["45", "46", "47", "48", "49"],
-  "version-name": "v0.7.0",
+  "version-name": "v0.8.0",
   "url": "https://github.com/kando-menu"
 }
