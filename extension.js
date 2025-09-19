@@ -101,7 +101,13 @@ export default class KandoIntegration extends Extension {
                  device.get_device_type() == Clutter.InputDeviceType.TOUCHPAD_DEVICE ||
                  device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE) {
 
-          this._lastPointerDevice = seat.get_pointer();
+             if (utils.shellVersionIsAtLeast(49, "beta")) {
+            const sprite              = Clutter.get_default_backend().get_pointer_sprite(global.stage);
+            this._lastPointerDevice = sprite.device;
+                } else {
+                        const seat              = Clutter.get_default_backend().get_default_seat();
+            this._lastPointerDevice = seat.get_pointer();
+                }
       }
     });
   }
@@ -149,18 +155,17 @@ export default class KandoIntegration extends Extension {
     let [x, y] = [0, 0];
 
     if (this._lastPointerDevice != null) {
-      if (utils.shellVersionIsAtLeast(49, 1)) {
+      if (utils.shellVersionIsAtLeast(49, 0)) {
         // This will hopefully work soon: https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/4668
         global.stage.foreach_sprite((stage, sprite) => {
           if (sprite.device == this._lastPointerDevice) {
             const coords = sprite.get_coords();
             [x, y] = [coords.x, coords.y];
-            console.log("Found sprite for device", this._lastPointerDevice, "at", x, y);
             return false; // Stop iteration.
           }
         });
       } else  if (utils.shellVersionIsAtLeast(49, "beta")) {
-        // Between 49 beta and 49.1, there was no way to query the position of a specific
+        // Between 49 beta and 49.0, there was no way to query the position of a specific
         // input device. So we just return the main pointer position here.
         [x, y] = global.get_pointer();
       } else {
