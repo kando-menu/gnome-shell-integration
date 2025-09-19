@@ -155,7 +155,7 @@ export default class KandoIntegration extends Extension {
     let [x, y] = [0, 0];
 
     if (this._lastPointerDevice != null) {
-      if (utils.shellVersionIsAtLeast(49)) {
+      if (utils.shellVersionIsAtLeast(49, 1)) {
         // This will hopefully work in the final 49 release:
         // https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/4668
         global.stage.foreach_sprite((stage, sprite) => {
@@ -166,7 +166,7 @@ export default class KandoIntegration extends Extension {
           }
         });
       } else if (utils.shellVersionIsAtLeast(49, 'beta')) {
-        // Between 49 beta and 49.0, there was no way to query the position of a specific
+        // Between 49 beta and 49.1, there was no way to query the position of a specific
         // input device. So we just return the main pointer position here.
         [x, y] = global.get_pointer();
       } else {
