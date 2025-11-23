@@ -13,6 +13,7 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
 import Clutter from 'gi://Clutter';
 
 import * as utils from './src/utils.js';
@@ -28,10 +29,14 @@ const DBUS_INTERFACE = `
 <node>
   <interface name="org.gnome.Shell.Extensions.KandoIntegration">
     <method name="GetWMInfo">
-      <arg name="windowTitle" type="s" direction="out" />
-      <arg name="windowClass" type="s" direction="out" />
-      <arg name="pointerX"    type="i" direction="out" />
-      <arg name="pointerY"    type="i" direction="out" />
+      <arg name="windowTitle"    type="s" direction="out" />
+      <arg name="windowClass"    type="s" direction="out" />
+      <arg name="pointerX"       type="i" direction="out" />
+      <arg name="pointerY"       type="i" direction="out" />
+      <arg name="workAreaX"      type="i" direction="out" />
+      <arg name="workAreaY"      type="i" direction="out" />
+      <arg name="workAreaWidth"  type="i" direction="out" />
+      <arg name="workAreaHeight" type="i" direction="out" />
     </method>
     <method name="MovePointer">
       <arg name="dx"   type="i" direction="in" />
@@ -156,7 +161,7 @@ export default class KandoIntegration extends Extension {
 
     if (this._lastPointerDevice != null) {
       if (utils.shellVersionIsAtLeast(49, 1)) {
-        // This will hopefully work in the final 49 release:
+        // This will hopefully work in the final 49.1 release:
         // https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/4668
         global.stage.foreach_sprite((stage, sprite) => {
           if (sprite.device == this._lastPointerDevice) {
@@ -180,11 +185,16 @@ export default class KandoIntegration extends Extension {
       [x, y] = global.get_pointer();
     }
 
+    const rect     = new Mtk.Rectangle({x, y, width: 1, height: 1});
+    const monitor  = global.display.get_monitor_index_for_rect(rect);
+    const workArea = global.display.get_monitor_geometry(monitor);
+
     const scalingFactor = this._shellSettings.get_double('text-scaling-factor');
 
     return [
       windowName, windowClass, Math.round(x / scalingFactor),
-      Math.round(y / scalingFactor)
+      Math.round(y / scalingFactor), workArea.x, workArea.y, workArea.width,
+      workArea.height
     ];
   }
 
