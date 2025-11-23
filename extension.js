@@ -169,6 +169,7 @@ export default class KandoIntegration extends Extension {
             [x, y]       = [coords.x, coords.y];
             return false;  // Stop iteration.
           }
+          return true;
         });
       } else if (utils.shellVersionIsAtLeast(49, 'beta')) {
         // Between 49 beta and 49.1, there was no way to query the position of a specific
