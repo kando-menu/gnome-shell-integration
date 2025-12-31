@@ -207,8 +207,10 @@ export default class KandoIntegration extends Extension {
   // Simulates the given key strokes. The keys argument is an array of arrays. Each
   // sub-array contains three elements: The keysym, a boolean indicating whether the key
   // should be pressed or released and an optional delay in milliseconds.
-  SimulateKeys(keys) {
-    this._inputManipulator.simulateKeys(keys);
+  async SimulateKeysAsync(params, invocation) {
+    const [keys] = params;
+    await this._inputManipulator.simulateKeys(keys);
+    invocation.return_value(null);
   }
 
   // Binds the given shortcut. When it's pressed, the "ShortcutPressed" signal will be
