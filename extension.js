@@ -16,8 +16,10 @@ import Meta from 'gi://Meta';
 import Mtk from 'gi://Mtk';
 import Clutter from 'gi://Clutter';
 
-import * as utils from './src/utils.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+
+import * as utils from './src/utils.js';
 import {Shortcuts} from './src/Shortcuts.js';
 import {InputManipulator} from './src/InputManipulator.js';
 
@@ -70,6 +72,24 @@ export default class KandoIntegration extends Extension {
     if (!Meta.is_wayland_compositor()) {
       return;
     }
+
+    // We will monkey-patch this method. Let's store the original ones.
+    this._origShouldAnimateActor = Main.wm._shouldAnimateActor;
+
+    // We will use extensionThis to refer to the extension inside the patched methods.
+    const extensionThis = this;
+
+    // It seems, that it's currently not possible to disable window animations for on
+    // Wayland via Electron. So we monkey-patch this method to disable animations for
+    // Kando's menu window.
+    Main.wm._shouldAnimateActor = function(actor, types) {
+      if (actor.meta_window && actor.meta_window.get_title() === 'Kando Menu') {
+        return false;
+      }
+
+      // Call the original method.
+      return extensionThis._origShouldAnimateActor.apply(this, [actor, types]);
+    };
 
     // This is used to get the desktop's text scaling factor.
     this._shellSettings = new Gio.Settings({schema: 'org.gnome.desktop.interface'});
@@ -124,6 +144,8 @@ export default class KandoIntegration extends Extension {
     if (!Meta.is_wayland_compositor()) {
       return;
     }
+
+    Main.wm._shouldAnimateActor = this._origShouldAnimateActor;
 
     this._shellSettings = null;
 
