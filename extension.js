@@ -208,9 +208,10 @@ export default class KandoIntegration extends Extension {
       [x, y] = global.get_pointer();
     }
 
-    const rect     = new Mtk.Rectangle({x, y, width: 1, height: 1});
-    const monitor  = global.display.get_monitor_index_for_rect(rect);
-    const workArea = global.display.get_monitor_geometry(monitor);
+    const rect      = new Mtk.Rectangle({x, y, width: 1, height: 1});
+    const monitor   = global.display.get_monitor_index_for_rect(rect);
+    const workspace = global.workspace_manager.get_active_workspace();
+    const workArea  = workspace.get_work_area_for_monitor(monitor);
 
     const scalingFactor = this._shellSettings.get_double('text-scaling-factor');
 
