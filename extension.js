@@ -69,7 +69,7 @@ export default class KandoIntegration extends Extension {
   enable() {
 
     // Do nothing on X11.
-    if (!Meta.is_wayland_compositor()) {
+    if (Meta.is_wayland_compositor && !Meta.is_wayland_compositor()) {
       return;
     }
 
@@ -141,7 +141,7 @@ export default class KandoIntegration extends Extension {
   disable() {
 
     // Do nothing on X11.
-    if (!Meta.is_wayland_compositor()) {
+    if (Meta.is_wayland_compositor && !Meta.is_wayland_compositor()) {
       return;
     }
 
