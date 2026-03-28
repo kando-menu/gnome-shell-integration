@@ -37,5 +37,4 @@ gnome-extensions enable kando-integration@kando-menu.github.io
 
 ## 🗒️ Changelog
 
-We do not maintain a separate changelog for this repository.
-Changes are documented alongside other changes in Kando's [changelog](https://github.com/kando-menu/kando/blob/main/docs/changelog.md).
+See [changelog.md](./changelog.md) for a detailed list of changes.
