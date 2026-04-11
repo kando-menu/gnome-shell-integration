@@ -94,9 +94,6 @@ export default class KandoIntegration extends Extension {
     // This is used to get the desktop's text scaling factor.
     this._shellSettings = new Gio.Settings({schema: 'org.gnome.desktop.interface'});
 
-    // This is used to get whether fractional scaling is enabled.
-    this._mutterSettings = new Gio.Settings({schema: 'org.gnome.mutter'});
-
     this._dbus = Gio.DBusExportedObject.wrapJSObject(DBUS_INTERFACE, this);
     this._dbus.export(Gio.DBus.session, '/org/gnome/shell/extensions/KandoIntegration');
 
@@ -150,8 +147,7 @@ export default class KandoIntegration extends Extension {
 
     Main.wm._shouldAnimateActor = this._origShouldAnimateActor;
 
-    this._shellSettings  = null;
-    this._mutterSettings = null;
+    this._shellSettings = null;
 
     this._dbus.flush();
     this._dbus.unexport();
@@ -217,13 +213,20 @@ export default class KandoIntegration extends Extension {
     const workspace = global.workspace_manager.get_active_workspace();
     const workArea  = workspace.get_work_area_for_monitor(monitor);
 
-    const scalingFactor = this._shellSettings.get_double('text-scaling-factor');
-    const features      = this._mutterSettings.get_strv('experimental-features');
+    const monitorScale = global.display.get_monitor_scale(monitor);
+    const monitorRect  = global.display.get_monitor_geometry(monitor);
+    const stageViews   = global.stage.peek_stage_views();
+    let viewScale      = 0;
+    for (const view of stageViews) {
+      if (view.layout.x == monitorRect.x && view.layout.y == monitorRect.y) {
+        viewScale = view.get_scale();
+        break;
+      }
+    }
 
     // If fractional scaling is disabled, the coordinates we get from global.get_pointer()
     // are already scaled. If it's enabled, we need to scale them manually.
-    if (!features.includes('scale-monitor-framebuffer')) {
-      const monitorScale = global.display.get_monitor_scale(monitor);
+    if (viewScale == 1 && monitorScale > 1) {
       x /= monitorScale;
       y /= monitorScale;
       workArea.x /= monitorScale;
@@ -232,10 +235,11 @@ export default class KandoIntegration extends Extension {
       workArea.height /= monitorScale;
     }
 
+    const textScale = this._shellSettings.get_double('text-scaling-factor');
+
     return [
-      windowName, windowClass, Math.round(x / scalingFactor),
-      Math.round(y / scalingFactor), workArea.x, workArea.y, workArea.width,
-      workArea.height
+      windowName, windowClass, Math.round(x / textScale), Math.round(y / textScale),
+      workArea.x, workArea.y, workArea.width, workArea.height
     ];
   }
 

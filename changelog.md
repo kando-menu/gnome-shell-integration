@@ -15,6 +15,14 @@ Security   - in case of vulnerabilities.
 Kando uses [semantic versioning](https://semver.org).
 This changelog follows the rules of [Keep a Changelog](http://keepachangelog.com/).
 
+## [GNOME Shell Integration 0.12.0](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.12.0)
+
+**Release Date:** 2026-04-11
+
+### :bug: Fixed
+
+- Getting the scaled pointer position on GNOME 50 when using non-fractional display scaling on Wayland.
+
 ## [GNOME Shell Integration 0.11.0](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.11.0)
 
 **Release Date:** 2026-03-28
