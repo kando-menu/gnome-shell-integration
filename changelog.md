@@ -15,6 +15,14 @@ Security   - in case of vulnerabilities.
 Kando uses [semantic versioning](https://semver.org).
 This changelog follows the rules of [Keep a Changelog](http://keepachangelog.com/).
 
+## [unreleased]
+
+**Release Date:** TBD
+
+### :bug: Fixed
+
+- A regression introduced by GNOME Shell 50, which caused the menu to open in the top left corner of the screen when using a stylus. Thanks to [@Davi0Cruz](https://github.com/Davi0Cruz) for the fix!
+
 ## [GNOME Shell Integration 0.12.0](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.12.0)
 
 **Release Date:** 2026-04-11
