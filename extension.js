@@ -182,14 +182,14 @@ export default class KandoIntegration extends Extension {
     let [x, y] = [0, 0];
 
     if (this._lastPointerDevice != null) {
-      if (utils.shellVersionIsAtLeast(50, "alpha")) {
+      if (utils.shellVersionIsAtLeast(50, 'alpha')) {
         // The sprite device property changed the name in 50.alpha :
         // https://gitlab.gnome.org/GNOME/mutter/-/commit/8c0b25b911c0449ce8b3d58c810e4463c4f61916
         global.stage.foreach_sprite((stage, sprite) => {
           if (sprite.sprite_device == this._lastPointerDevice) {
             const coords = sprite.get_coords();
-            [x, y] = [coords.x, coords.y];
-            return false; // Stop iteration.
+            [x, y]       = [coords.x, coords.y];
+            return false;  // Stop iteration.
           }
           return true;
         });
