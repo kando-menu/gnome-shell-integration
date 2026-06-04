@@ -15,9 +15,9 @@ Security   - in case of vulnerabilities.
 Kando uses [semantic versioning](https://semver.org).
 This changelog follows the rules of [Keep a Changelog](http://keepachangelog.com/).
 
-## [unreleased]
+## [GNOME Shell Integration 0.13.0](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.13.0)
 
-**Release Date:** TBD
+**Release Date:** 2026-06-04
 
 ### :bug: Fixed
 
