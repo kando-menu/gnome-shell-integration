@@ -15,6 +15,15 @@ Security   - in case of vulnerabilities.
 Kando uses [semantic versioning](https://semver.org).
 This changelog follows the rules of [Keep a Changelog](http://keepachangelog.com/).
 
+## [unreleased]
+
+**Release Date:** TBD
+
+### :tada: Added
+
+- A method for getting all currently open windows.
+- A method for focusing a specific window.
+
 ## [GNOME Shell Integration 0.13.0](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.13.0)
 
 **Release Date:** 2026-06-04
