@@ -40,6 +40,13 @@ const DBUS_INTERFACE = `
       <arg name="workAreaWidth"  type="i" direction="out" />
       <arg name="workAreaHeight" type="i" direction="out" />
     </method>
+    <method name="GetOpenWindows">
+      <arg name="windows"        type="a(ss)" direction="out" />
+    </method>
+    <method name="FocusWindow">
+      <arg name="windowTitle"    type="s" direction="in" />
+      <arg name="windowClass"    type="s" direction="in" />
+    </method>
     <method name="MovePointer">
       <arg name="dx"   type="i" direction="in" />
       <arg name="dy"   type="i" direction="in" />
@@ -252,6 +259,33 @@ export default class KandoIntegration extends Extension {
       windowName, windowClass, Math.round(x / textScale), Math.round(y / textScale),
       workArea.x, workArea.y, workArea.width, workArea.height
     ];
+  }
+
+  // Returns the title and class of all open windows.
+  GetOpenWindows() {
+    const windows = [];
+
+    for (let actor of global.get_window_actors()) {
+      const metaWindow = actor.meta_window;
+      windows.push([metaWindow.get_title(), metaWindow.get_wm_class()]);
+    }
+
+    return windows;
+  }
+
+  // Focuses the window with the given title and class. If there are multiple windows
+  // with the same title and class, one of them will be focused (which one is not
+  // deterministic).
+  FocusWindow(windowTitle, windowClass) {
+    for (let actor of global.get_window_actors()) {
+      const metaWindow = actor.meta_window;
+      if (metaWindow.get_title() === windowTitle &&
+          metaWindow.get_wm_class() === windowClass) {
+        metaWindow.get_workspace().activate_with_focus(metaWindow,
+                                                       global.get_current_time());
+        break;
+      }
+    }
   }
 
   // Warps the mouse pointer by the given distance.
