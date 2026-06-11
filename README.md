@@ -8,7 +8,7 @@ SPDX-License-Identifier: CC-BY-4.0
 > [!IMPORTANT]
 > The code in the `main` branch is for GNOME Shell 45+. For older GNOME versions, please use the `gnome-40-44` branch.
 
-This GNOME Shell extension is required for [🥧 Kando](https://github.com/kando-menu/kando) on GNOME under Wayland.
+This GNOME Shell extension is required for 🌸 [Kando](https://github.com/kando-menu/kando) on GNOME under Wayland.
 Via a D-Bus interface, it provides the name of the currently focused window, and the current mouse pointer position.
 Furthermore, it allows registering and simulating keyboard shortcuts.
 
