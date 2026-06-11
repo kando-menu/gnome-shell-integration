@@ -12,8 +12,7 @@ Security   - in case of vulnerabilities.
 
 # Changelog of the GNOME Shell Extension for Kando
 
-Kando uses [semantic versioning](https://semver.org).
-This changelog follows the rules of [Keep a Changelog](http://keepachangelog.com/).
+This changelog uses [semantic versioning](https://semver.org) and follows the rules of [Keep a Changelog](http://keepachangelog.com/).
 
 ## [unreleased]
 
