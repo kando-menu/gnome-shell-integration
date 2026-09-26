@@ -14,14 +14,15 @@ Security   - in case of vulnerabilities.
 
 This changelog uses [semantic versioning](https://semver.org) and follows the rules of [Keep a Changelog](http://keepachangelog.com/).
 
-## [unreleased]
+## [GNOME Shell Integration 0.14.0](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.14.0)
 
-**Release Date:** TBD
+**Release Date:** 2026-09-26
 
 ### :tada: Added
 
 - A method for getting all currently open windows.
 - A method for focusing a specific window.
+- Support for GNOME 51.
 
 ## [GNOME Shell Integration 0.13.0](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.13.0)
 
