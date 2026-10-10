@@ -12,6 +12,8 @@
 
 import Clutter from 'gi://Clutter';
 
+import * as utils from './utils.js';
+
 //////////////////////////////////////////////////////////////////////////////////////////
 // An instance of this class can be used to create faked input events. You can use it   //
 // to move the mouse pointer or to press accelerator key strokes.                       //
@@ -22,8 +24,10 @@ export class InputManipulator {
   // ------------------------------------------------------------ constructor / destructor
 
   constructor() {
-    const dev      = Clutter.get_default_backend().get_default_seat();
-    this._mouse    = dev.create_virtual_device(Clutter.InputDeviceType.POINTER_DEVICE);
+    const backend = utils.shellVersionIsAtLeast(51) ? global.stage.context.get_backend() :
+                                                      Clutter.get_default_backend();
+    const dev     = backend.get_default_seat();
+    this._mouse   = dev.create_virtual_device(Clutter.InputDeviceType.POINTER_DEVICE);
     this._keyboard = dev.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
   }
 

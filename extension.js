@@ -133,7 +133,11 @@ export default class KandoIntegration extends Extension {
                  device.get_device_type() == Clutter.InputDeviceType.TOUCHPAD_DEVICE ||
                  device.get_device_type() == Clutter.InputDeviceType.TOUCHSCREEN_DEVICE) {
 
-        if (utils.shellVersionIsAtLeast(49, 'beta')) {
+        if (utils.shellVersionIsAtLeast(51)) {
+          const sprite =
+            global.stage.context.get_backend().get_pointer_sprite(global.stage);
+          this._lastPointerDevice = sprite.device;
+        } else if (utils.shellVersionIsAtLeast(49, 'beta')) {
           const sprite = Clutter.get_default_backend().get_pointer_sprite(global.stage);
           this._lastPointerDevice = sprite.device;
         } else {
