@@ -14,6 +14,14 @@ Security   - in case of vulnerabilities.
 
 This changelog uses [semantic versioning](https://semver.org) and follows the rules of [Keep a Changelog](http://keepachangelog.com/).
 
+## [GNOME Shell Integration 0.14.1](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.14.1)
+
+**Release Date:** 2026-10-10
+
+### :bug: Fixed
+
+- A regression introduced on GNOME 51, which caused the extension to not work correctly.
+
 ## [GNOME Shell Integration 0.14.0](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.14.0)
 
 **Release Date:** 2026-09-26
