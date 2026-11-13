@@ -260,7 +260,13 @@ export default class KandoIntegration extends Extension {
     const textScale = this._shellSettings.get_double('text-scaling-factor');
 
     return [
-      windowName, windowClass, Math.round(x / textScale), Math.round(y / textScale),
+      windowName, windowClass,
+      // Scale the pointer position within the work area rather than the absolute
+      // position: Kando computes (pointerX - workArea.x) / zoom, so dividing the
+      // absolute coordinate by the text scale lands the menu short of the pointer by
+      // (1 - 1 / textScale) * workArea.x on monitors that are not at the origin.
+      Math.round(workArea.x + (x - workArea.x) / textScale),
+      Math.round(workArea.y + (y - workArea.y) / textScale),
       workArea.x, workArea.y, workArea.width, workArea.height
     ];
   }
