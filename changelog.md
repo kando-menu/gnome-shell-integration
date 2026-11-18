@@ -14,6 +14,14 @@ Security   - in case of vulnerabilities.
 
 This changelog uses [semantic versioning](https://semver.org) and follows the rules of [Keep a Changelog](http://keepachangelog.com/).
 
+## [GNOME Shell Integration 0.14.2](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.14.2)
+
+**Release Date:** 2026-11-18
+
+### :bug: Fixed
+
+- An issue which would cause the menu not to open at the correct position when using multiple monitors and a text-scaling factor different from 1. Thanks to [@jphein](https://github.com/jphein) for the fix!
+
 ## [GNOME Shell Integration 0.14.1](https://github.com/kando-menu/gnome-shell-integration/releases/tag/v0.14.1)
 
 **Release Date:** 2026-10-10
