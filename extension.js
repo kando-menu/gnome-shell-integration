@@ -266,8 +266,8 @@ export default class KandoIntegration extends Extension {
       // absolute coordinate by the text scale lands the menu short of the pointer by
       // (1 - 1 / textScale) * workArea.x on monitors that are not at the origin.
       Math.round(workArea.x + (x - workArea.x) / textScale),
-      Math.round(workArea.y + (y - workArea.y) / textScale),
-      workArea.x, workArea.y, workArea.width, workArea.height
+      Math.round(workArea.y + (y - workArea.y) / textScale), workArea.x, workArea.y,
+      workArea.width, workArea.height
     ];
   }
 
